@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latenightfindz</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#111;
+color:#fff;
+overflow-x:hidden;
+}
+
+/* 18+ GATE */
+#ageGate{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#000;
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:99999;
+}
+
+.age-box{
+background:#1b1b1b;
+padding:35px;
+border-radius:14px;
+width:360px;
+text-align:center;
+}
+
+.age-box h1{
+color:red;
+margin-bottom:12px;
+}
+
+.age-box p{
+color:#ccc;
+margin-bottom:18px;
+}
+
+/* BUTTONS */
+button{
+background:red;
+color:#fff;
+border:none;
+padding:10px 14px;
+border-radius:8px;
+cursor:pointer;
+transition:.25s;
+}
+
+button:hover{
+transform:translateY(-2px);
+box-shadow:0 8px 18px rgba(255,0,0,.15);
+}
+
+/* HEADER */
+header{
+background:#1b1b1b;
+padding:15px 20px;
+display:flex;
+align-items:center;
+gap:15px;
+position:sticky;
+top:0;
+z-index:999;
+}
+
+.logo{
+font-size:22px;
+font-weight:bold;
+white-space:nowrap;
+}
+
+/* SEARCH */
+.search-wrap{
+flex:1;
+display:flex;
+align-items:center;
+background:#2a2a2a;
+border-radius:10px;
+overflow:hidden;
+height:44px;
+}
+
+#searchInput{
+flex:1;
+height:100%;
+padding:0 14px;
+border:none;
+outline:none;
+background:transparent;
+color:white;
+}
+
+.search-btn{
+height:100%;
+border-radius:0;
+background:#3b3b3b;
+padding:0 18px;
+}
+
+/* MENU */
+.menu{
+width:32px;
+height:24px;
+position:relative;
+cursor:pointer;
+}
+
+.menu span{
+position:absolute;
+left:0;
+width:100%;
+height:4px;
+background:red;
+border-radius:3px;
+transition:.35s;
+}
+
+.menu span:nth-child(1){top:0;}
+.menu span:nth-child(2){top:10px;}
+.menu span:nth-child(3){top:20px;}
+
+.menu.active span:nth-child(1){
+transform:rotate(45deg);
+top:10px;
+}
+
+.menu.active span:nth-child(2){
+opacity:0;
+}
+
+.menu.active span:nth-child(3){
+transform:rotate(-45deg);
+top:10px;
+}
+
+/* SIDEBAR */
+.sidebar{
+position:fixed;
+top:0;
+left:-260px;
+width:250px;
+height:100%;
+background:#181818;
+padding:20px;
+transition:.35s;
+z-index:998;
+overflow:auto;
+}
+
+.sidebar.active{
+left:0;
+}
+
+.sidebar button{
+width:100%;
+margin-bottom:10px;
+}
+
+/* CONTENT */
+.content{
+padding:20px;
+}
+
+.page-title{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+gap:10px;
+flex-wrap:wrap;
+}
+
+.count{
+color:#aaa;
+}
+
+/* GRID */
+.video-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+.video-card{
+background:#1c1c1c;
+padding:12px;
+border-radius:10px;
+}
+
+video{
+width:100%;
+border-radius:8px;
+}
+
+.tags{
+margin-top:8px;
+font-size:13px;
+color:#bbb;
+}
+
+.tags span{
+margin-right:8px;
+cursor:pointer;
+}
+
+.share-btn{
+margin-top:10px;
+width:100%;
+}
+
+/* POPUP */
+.popup{
+display:none;
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:#1c1c1c;
+padding:25px;
+border-radius:12px;
+width:340px;
+z-index:9999;
+opacity:1;
+}
+
+.fade-in{
+animation:fadeIn .5s ease;
+}
+
+@keyframes fadeIn{
+from{opacity:0;transform:translate(-50%,-45%);}
+to{opacity:1;transform:translate(-50%,-50%);}
+}
+
+.popup input{
+width:100%;
+padding:10px;
+margin-bottom:10px;
+background:#333;
+color:white;
+border:none;
+border-radius:8px;
+outline:none;
+}
+
+.close{
+position:absolute;
+top:10px;
+right:15px;
+font-size:22px;
+color:red;
+cursor:pointer;
+}
+
+/* PASSWORD */
+.pass-wrap{
+position:relative;
+}
+
+.eye{
+position:absolute;
+right:12px;
+top:11px;
+cursor:pointer;
+user-select:none;
+}
+
+/* PROFILE */
+.profile-btn{
+width:42px;
+height:42px;
+border-radius:50%;
+padding:0;
+font-weight:bold;
+}
+
+#profilePanel{
+display:none;
+position:absolute;
+top:72px;
+right:20px;
+background:#1c1c1c;
+padding:18px;
+border-radius:12px;
+width:260px;
+z-index:9999;
+}
+
+#profilePanel button{
+width:100%;
+margin-bottom:8px;
+}
+
+/* UPLOAD */
+#uploadPanel{
+display:none;
+margin-top:25px;
+background:#1c1c1c;
+padding:20px;
+border-radius:10px;
+}
+
+#uploadPanel input,
+#uploadPanel select{
+width:100%;
+padding:10px;
+margin-bottom:10px;
+background:#333;
+color:#fff;
+border:none;
+border-radius:8px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- AGE GATE -->
+<div id="ageGate">
+<div class="age-box">
+<h1>18+ WARNING</h1>
+<p>You must be 18 years or older to access this website.</p>
+<button onclick="enterSite()">I am 18+</button>
+<button style="background:#333;" onclick="leaveSite()">Under 18</button>
+</div>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+<button oncick="filterVideos('all')">All</button>
+<button onclick="filterVideos('BBC')">BBC</button>
+<button onclick="filterVideos('Brunette')">Brunette</button>
+<button onclick="filterVideos('Trending')">Trending</button>
+<button onclick="filterVideos('Popular')">Popular</button>
+<button oncick="filterVideos('Straight')">Straight</button>
+<button onclick="filterVideos('Gay')">Gay</button>
+<button onclick="filterVideos('Lesbian')">Lesbian</button>
+<button onclick="filterVideos('Hentai')">Hentai</button>
+<button onclick="filterVideos('Trans')">Trans</button>
+  <button oncick="filterVideos('Anal')">Anal</button>
+<button onclick="filterVideos('Threesome')">Threesome</button>
+<button onclick="filterVideos('Ebony')">Ebony</button>
+<button onclick="filterVideos('Virtual Reality')">Virtual Reality</button>
+<button onclick="filterVideos('Compilation')">Compilation</button>
+</div>
+
+<!-- HEADER -->
+<header>
+
+<div class="menu" id="menuBtn" onclick="toggleSidebar()">
+<span></span><span></span><span></span>
+</div>
+
+<div class="logo">Latenightfindz</div>
+
+<div class="search-wrap">
+<input type="text" id="searchInput" placeholder="Search...">
+<button class="search-btn" onclick="searchVideos()">🔍</button>
+</div>
+
+<div id="authArea">
+<button onclick="showLogin()">Login</button>
+<button onclick="showRegister()">Register</button>
+</div>
+
+</header>
+
+<!-- PROFILE -->
+<div id="profilePanel">
+<p><strong id="profileName"></strong></p>
+<p id="channelName"></p>
+<button onclick="viewChannel()">View Channel</button>
+<button onclick="showUpload()">Upload</button>
+<button onclick="logoutUser()">Logout</button>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+<div class="page-title">
+<h1 id="pageHeading">For You Page</h1>
+<div class="count" id="resultCount">3 Videos</div>
+</div>
+
+<div class="video-grid" id="videoGrid">
+
+<div class="video-card" data-category="BBC" data-owner="">
+<video controls><source src="sample.mp4"></video>
+<p>Popular BBC</p>
+<div class="tags">
+<span onclick="quickSearch('#bbc')">#bbc</span>
+</div>
+<button class="share-btn" onclick="shareVideo()">Share</button>
+</div>
+
+<div class="video-card" data-category="Brunette" data-owner="">
+<video controls><source src="sample.mp4"></video>
+<p>Brunette Tonight</p>
+<div class="tags">
+<span onclick="quickSearch('#brunette')">#brunette</span>
+</div>
+<button class="share-btn" onclick="shareVideo()">Share</button>
+</div>
+
+<div class="video-card" data-category="Trending" data-owner="">
+<video controls><source src="sample.mp4"></video>
+<p>Trending Upload</p>
+<div class="tags">
+<span onclick="quickSearch('#trending')">#trending</span>
+</div>
+<button class="share-btn" onclick="shareVideo()">Share</button>
+</div>
+
+</div>
+
+<div id="uploadPanel">
+<h2 style="margin-bottom:15px;">Upload Video</h2>
+<input type="text" id="videoTitle" placeholder="Video Title">
+<select id="videoCategory">
+<option>BBC</option>
+<option>Brunette</option>
+<option>Trending</option>
+<option>Popular</option>
+<option>Straight</option>
+<option>Gay</option>
+ <option>Lesbian</option>
+<option>Hentai</option>
+<option>Trans</option>
+<option>Anal</option>
+<option>Threesome</option>
+<option>Ebony</option>
+<option>Virtual Reality</option>
+<option>Compilation</option> 
+</select>
+<input type="file" id="videoFile">
+<button onclick="uploadVideo()">Upload</button>
+</div>
+
+</div>
+
+<!-- LOGIN -->
+<div class="popup" id="loginBox">
+<div class="close" onclick="closePopups()">✕</div>
+<h2>Login</h2>
+
+<input type="text" id="loginUser" placeholder="Username">
+
+<div class="pass-wrap">
+<input type="password" id="loginPass" placeholder="Password">
+<span class="eye" onclick="toggleEye('loginPass',this)">👁</span>
+</div>
+
+<button onclick="loginUserNow()">Login</button>
+</div>
+
+<!-- REGISTER -->
+<div class="popup" id="registerBox">
+<div class="close" onclick="closePopups()">✕</div>
+<h2>Create Account</h2>
+
+<input type="text" id="regUser" placeholder="Username">
+
+<div class="pass-wrap">
+<input type="password" id="regPass" placeholder="Create Password">
+<span class="eye" onclick="toggleEye('regPass',this)">👁</span>
+</div>
+
+<div class="pass-wrap">
+<input type="password" id="regConfirm" placeholder="Confirm Password">
+<span class="eye" onclick="toggleEye('regConfirm',this)">👁</span>
+</div>
+
+<button onclick="registerUserNow()">Register</button>
+</div>
+
+<script>
+let users = JSON.parse(localStorage.getItem("users")) || [];
+let currentUser = localStorage.getItem("currentUser") || "";
+
+/* SEARCH PLACEHOLDERS */
+const hotSearches = [
+"Search #bbc",
+"Search #brunette",
+"Search #trending",
+"Search #popular",
+"Search #Straight",
+"Search #Gay",
+"Search #Lesbian",
+"Search #Hentai",
+"Search #Trans",
+"Search #Anal",
+"Search #Threesome",
+"Search #Ebony",
+"Search #Virtual Reality",
+"Search #Compilation",
+];
+
+let i=0;
+setInterval(()=>{
+searchInput.placeholder = hotSearches[i];
+i = (i+1) % hotSearches.length;
+},2000);
+
+/* LOAD */
+window.onload=function(){
+if(currentUser){renderProfile();}
+}
+
+/* AGE */
+function enterSite(){
+ageGate.style.display="none";
+}
+
+function leaveSite(){
+window.location.href="https://google.com";
+}
+
+/* SIDEBAR */
+function toggleSidebar(){
+sidebar.classList.toggle("active");
+menuBtn.classList.toggle("active");
+}
+
+function closeSidebar(){
+sidebar.classList.remove("active");
+menuBtn.classList.remove("active");
+}
+
+/* POPUPS */
+function showLogin(){
+closePopups();
+loginBox.classList.add("fade-in");
+loginBox.style.display="block";
+}
+
+function showRegister(){
+closePopups();
+registerBox.style.display="block";
+}
+
+function closePopups(){
+loginBox.style.display="none";
+registerBox.style.display="none";
+}
+
+/* PASSWORD EYE */
+function toggleEye(id,el){
+let box = document.getElementById(id);
+
+if(box.type==="password"){
+box.type="text";
+el.innerText="🙈";
+}else{
+box.type="password";
+el.innerText="👁";
+}
+}
+
+/* REGISTER */
+function registerUserNow(){
+
+let user = regUser.value.trim();
+let pass = regPass.value;
+let confirm = regConfirm.value;
+
+if(user==="" || pass==="" || confirm===""){
+alert("Complete all fields");
+return;
+}
+
+if(pass !== confirm){
+alert("Passwords do not match");
+return;
+}
+
+if(users.find(x=>x.user===user)){
+alert("Username already exists");
+return;
+}
+
+users.push({user:user,pass:pass});
+localStorage.setItem("users",JSON.stringify(users));
+
+closePopups();
+
+/* FADE TO LOGIN */
+setTimeout(()=>{
+showLogin();
+},200);
+
+alert("Account created. Please login.");
+}
+
+/* LOGIN */
+function loginUserNow(){
+
+let u = loginUser.value.trim();
+let p = loginPass.value;
+
+let found = users.find(x=>x.user===u && x.pass===p);
+
+if(found){
+currentUser=u;
+localStorage.setItem("currentUser",u);
+renderProfile();
+closePopups();
+}else{
+alert("Incorrect details");
+}
+}
+
+/* PROFILE */
+function renderProfile(){
+authArea.innerHTML =
+'<button class="profile-btn" onclick="toggleProfilePanel()">'+currentUser.charAt(0).toUpperCase()+'</button>';
+
+profileName.innerText=currentUser;
+channelName.innerText=currentUser+"'s Channel";
+}
+
+function toggleProfilePanel(){
+profilePanel.style.display =
+profilePanel.style.display==="block" ? "none":"block";
+}
+
+function logoutUser(){
+currentUser="";
+localStorage.removeItem("currentUser");
+
+authArea.innerHTML =
+'<button onclick="showLogin()">Login</button><button onclick="showRegister()">Register</button>';
+
+profilePanel.style.display="none";
+}
+
+/* SEARCH */
+function searchVideos(){
+let input = searchInput.value.toLowerCase();
+let cards = document.querySelectorAll(".video-card");
+let total=0;
+
+pageHeading.innerText="Searched Results : "+input;
+
+cards.forEach(card=>{
+if(card.innerText.toLowerCase().includes(input)){
+card.style.display="block";
+total++;
+}else{
+card.style.display="none";
+}
+});
+
+resultCount.innerText = total + " Videos";
+}
+
+/* TAG SEARCH */
+function quickSearch(tag){
+searchInput.value = tag;
+searchVideos();
+}
+
+/* FILTER */
+function filterVideos(cat){
+
+closeSidebar();
+
+let cards=document.querySelectorAll(".video-card");
+let total=0;
+
+pageHeading.innerText = cat + " Results";
+
+cards.forEach(card=>{
+if(cat==="all" || card.dataset.category===cat){
+card.style.display="block";
+total++;
+}else{
+card.style.display="none";
+}
+});
+
+resultCount.innerText = total + " Videos";
+}
+
+/* SHARE */
+function shareVideo(){
+navigator.clipboard.writeText(location.href);
+alert("Link copied");
+}
+
+/* UPLOAD */
+function showUpload(){
+
+if(!currentUser){
+alert("Login first.");
+showLogin();
+return;
+}
+
+uploadPanel.style.display="block";
+}
+
+function uploadVideo(){
+
+if(!currentUser){
+alert("Login first.");
+return;
+}
+
+let title=videoTitle.value.trim();
+let cat=videoCategory.value;
+let file=videoFile.files[0];
+
+if(title==="" || !file){
+alert("Complete fields");
+return;
+}
+
+let url=URL.createObjectURL(file);
+
+videoGrid.innerHTML += `
+<div class="video-card" data-category="${cat}" data-owner="${currentUser}">
+<video controls><source src="${url}"></video>
+<p>${title}</p>
+<div class="tags">
+<span onclick="quickSearch('#${cat.toLowerCase()}')">#${cat.toLowerCase()}</span>
+</div>
+<button class="share-btn" onclick="shareVideo()">Share</button>
+</div>
+`;
+
+alert("Uploaded");
+}
+
+/* VIEW CHANNEL */
+function viewChannel(){
+
+let cards=document.querySelectorAll(".video-card");
+let total=0;
+
+pageHeading.innerText=currentUser+"'s Channel";
+
+cards.forEach(card=>{
+if(card.dataset.owner===currentUser){
+card.style.display="block";
+total++;
+}else{
+card.style.display="none";
+}
+});
+
+resultCount.innerText = total + " Videos";
+profilePanel.style.display="none";
+}
+</script>
+
+</body>
+</html>
